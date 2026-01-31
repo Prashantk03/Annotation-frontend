@@ -4,6 +4,7 @@ import CanvasStage from "../components/Canvas/CanvasStage";
 import { useAuth } from "../context/AuthContext";
 import api from "../api/axios";
 import "./Dashboard.css";
+import toast from "react-hot-toast";
 
 export default function Dashboard() {
   const { logout } = useAuth();
@@ -14,10 +15,10 @@ export default function Dashboard() {
 
   const handleLogout = () => {
     logout();
+    toast.success("You've been Logout")
     navigate("/login");
   };
 
-  /* Sync input when selection changes */
   useEffect(() => {
     if (selectedRect) {
       setNameInput(selectedRect.name || "");
@@ -26,7 +27,8 @@ export default function Dashboard() {
     }
   }, [selectedRect]);
 
-  /* Save name to backend */
+  /********Save name to backend*********/
+
   const saveName = async () => {
     if (!selectedRect) return;
 
@@ -34,7 +36,6 @@ export default function Dashboard() {
       name: nameInput,
     });
 
-    // update local selected rect
     setSelectedRect((prev) => ({ ...prev, name: nameInput }));
   };
 
@@ -57,7 +58,8 @@ export default function Dashboard() {
             <>
               <h3>Annotation Info</h3>
 
-              {/* NAME INPUT */}
+              {/******Name Input*******/}
+
               <div className="annotation-name">
                 <label>Name</label>
 
@@ -74,6 +76,8 @@ export default function Dashboard() {
               </div>
 
               <hr />
+
+              {/*****Anotation details*****/}
 
               <p>
                 <b>X:</b> {Math.round(selectedRect.x)}

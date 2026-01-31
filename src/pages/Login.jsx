@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -11,9 +12,27 @@ export default function Login() {
   const navigate = useNavigate();
 
   const submit = async () => {
-    const res = await api.post("/auth/login", { username, password });
-    login(res.data.token);
-    navigate("/");
+    if (!username || !password) {
+      toast.error("Username and password required");
+      return;
+    }
+
+    const toastId = toast.loading("Logging in...");
+
+    try {
+      const res = await api.post("/auth/login", {
+        username,
+        password,
+      });
+
+      login(res.data.token);
+      toast.success("Login successful", { id: toastId });
+      navigate("/");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Invalid credentials", {
+        id: toastId,
+      });
+    }
   };
 
   return (

@@ -1,6 +1,7 @@
 import { Stage, Layer, Rect, Transformer } from "react-konva";
 import { useState, useRef, useEffect } from "react";
 import api from "../../api/axios";
+import toast from "react-hot-toast";
 
 export default function CanvasStage({ onSelect, onNameChange }) {
   const [rectangles, setRectangles] = useState([]);
@@ -13,7 +14,8 @@ export default function CanvasStage({ onSelect, onNameChange }) {
 
   const [stageSize, setStageSize] = useState({ width: 0, height: 0 });
 
-  /* ---------- RESPONSIVE STAGE SIZE ---------- */
+  /*********STAGE SIZE*********/
+
   useEffect(() => {
     const resizeStage = () => {
       if (!containerRef.current) return;
@@ -28,7 +30,8 @@ export default function CanvasStage({ onSelect, onNameChange }) {
     return () => window.removeEventListener("resize", resizeStage);
   }, []);
 
-  /* ---------- TRANSFORMER BIND ---------- */
+  /**********TRANSFORMER BIND**********/
+
   useEffect(() => {
     if (selectedId && selectedShapeRef.current && transformerRef.current) {
       transformerRef.current.nodes([selectedShapeRef.current]);
@@ -36,7 +39,8 @@ export default function CanvasStage({ onSelect, onNameChange }) {
     }
   }, [selectedId]);
 
-  /* ---------- KEYBOARD DELETE ---------- */
+  /*************KEYBOARD DELETE**********/
+
   useEffect(() => {
     const handleKeyDown = async (e) => {
       if (e.key === "Delete" && selectedId) {
@@ -51,7 +55,8 @@ export default function CanvasStage({ onSelect, onNameChange }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedId, onSelect]);
 
-  /* ---------- LOAD ANNOTATIONS ---------- */
+  /***********LOAD ANNOTATIONS***********/
+
   useEffect(() => {
     const loadAnnotations = async () => {
       const res = await api.get("/annotations");
@@ -76,21 +81,37 @@ export default function CanvasStage({ onSelect, onNameChange }) {
 
   try {
     await api.put(`/annotations/${id}`, { name });
+    toast.success("Name updated")
   } catch (err) {
-    console.error("Failed to update name", err);
+    toast.error("Failed to update name");
   }
 };
+
+const handleDeleteSelected = async () => {
+  if (!selectedId) return;
+
+  const toastId = toast.loading("Deleting annotation...");
+
+  try {
+    await api.delete(`/annotations/${selectedId}`);
+
+    setRectangles((prev) => prev.filter((r) => r.id !== selectedId));
+    setSelectedId(null);
+    onSelect?.(null);
+
+    toast.success("Annotation deleted", { id: toastId });
+  } catch (err) {
+    console.error(err);
+    toast.error("Failed to delete annotation", { id: toastId });
+  }
+};
+
 
   return (
     <>
       <button
         disabled={!selectedId}
-        onClick={async () => {
-          await api.delete(`/annotations/${selectedId}`);
-          setRectangles((prev) => prev.filter((r) => r.id !== selectedId));
-          setSelectedId(null);
-          onSelect?.(null);
-        }}
+        onClick={handleDeleteSelected}
         style={{ marginBottom: 10 }}
       >
         Delete Selected

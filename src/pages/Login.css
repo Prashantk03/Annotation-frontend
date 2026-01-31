@@ -24,7 +24,7 @@
 .login-card input,
 .login-card button {
   width: 100%;
-  box-sizing: border-box; /* 🔥 FIX */
+  box-sizing: border-box;
 }
 
 .login-card input {
