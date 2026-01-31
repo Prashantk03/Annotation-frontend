@@ -1,16 +1,35 @@
-# React + Vite
+# 🎨 Frontend – Annotation Canvas (React + Konva)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+```md
+# Annotation Frontend
 
-Currently, two official plugins are available:
+This is the frontend for the Annotation Canvas application.  
+Users can draw, move, resize, name, and delete rectangle annotations on a canvas.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Tech Stack
+- React (Vite)
+- React Konva
+- Axios
+- React Router
+- React Hot Toast
+- Vercel (Deployment)
 
-## React Compiler
+## 🔑 Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- User authentication
+- Draw rectangle annotations
+- Drag & resize rectangles
+- Select annotations
+- Edit and save annotation names
+- Delete annotations (button + keyboard)
+- Persistent data (MongoDB)
+- Toast notifications
+- Responsive UI
 
-## Expanding the ESLint configuration
+## 📝 Test Credentials
+- Username: prashant
+- Password: test123
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🌐 API Configuration
+
+The backend base URL is configured using environment variables.
