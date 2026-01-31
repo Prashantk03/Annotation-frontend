@@ -81,9 +81,8 @@ export default function CanvasStage({ onSelect, onNameChange }) {
 
   try {
     await api.put(`/annotations/${id}`, { name });
-    toast.success("Name updated")
   } catch (err) {
-    toast.error("Failed to update name");
+    console.error("Failed to update name", err);
   }
 };
 

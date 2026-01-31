@@ -15,7 +15,7 @@ export default function Dashboard() {
 
   const handleLogout = () => {
     logout();
-    toast.success("You've been Logout")
+    toast.success("You've been Logout");
     navigate("/login");
   };
 
@@ -32,11 +32,20 @@ export default function Dashboard() {
   const saveName = async () => {
     if (!selectedRect) return;
 
-    await api.put(`/annotations/${selectedRect.id}`, {
-      name: nameInput,
-    });
+    const toastId = toast.loading("Saving name...");
 
-    setSelectedRect((prev) => ({ ...prev, name: nameInput }));
+    try {
+      await api.put(`/annotations/${selectedRect.id}`, {
+        name: nameInput,
+      });
+
+      setSelectedRect((prev) => ({ ...prev, name: nameInput }));
+
+      toast.success("Name saved", { id: toastId });
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to save name", { id: toastId });
+    }
   };
 
   return (
