@@ -1,4 +1,4 @@
-# 🎨 Frontend – Annotation Canvas (React + Konva)
+# 🎨 Frontend – Annotation Canvas (React + KonvaJS)
 
 ```md
 # Annotation Frontend
